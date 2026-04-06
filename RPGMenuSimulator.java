@@ -85,9 +85,65 @@ public class RPGMenuSimulator {
                     break;
 
                 case 2:
-                    System.out.println("\nEntrenamiento próximamente...");
-                    break;
+                    if (!personajeCreado) {
+                        System.out.println("\nNo se ha creado un personaje aún...");
+                        break;
+                    }
 
+                    System.out.println("\n=== ENTRENAMIENTO ===");
+                    System.out.println("1. Entrenar Fuerza");
+                    System.out.println("2. Entrenar Resistencia (Vida)");
+                    System.out.println("3. Volver al menú principal");
+                    System.out.print("Seleccione una opción: ");
+
+                    int entrenamientoOpcion = scanner.nextInt();
+                    switch (entrenamientoOpcion) {
+                        case 1 -> {
+                            int gananciaFuerza = (int)(Math.random() * 5) + 1;
+                            fuerza += gananciaFuerza;
+
+                            String nivelFuerza;
+                            if (fuerza < 20) {
+                                nivelFuerza = "Débil";
+                            } else if (fuerza < 50) {
+                                nivelFuerza = "Promedio";
+                            } else if (fuerza <= 80) {
+                                nivelFuerza = "Fuerte";
+                            } else {
+                                nivelFuerza = "¡Imparable!";
+                            }
+
+                            System.out.println("\n=== RESULTADO DEL ENTRENAMIENTO ===");
+                            System.out.println("Tipo    : Fuerza");
+                            System.out.println("─────────────────────────────");
+                            System.out.println("Ganancia: +" + gananciaFuerza + " de Fuerza");
+                            System.out.println("Fuerza  : " + fuerza + "  " + nivelFuerza);
+                        }
+                        case 2 -> {
+                            int gananciaVida = (int)(Math.random() * 10) + 5;
+                            vida = Math.min(vida + gananciaVida, 100);
+
+                            int barraLlenaT = vida / 10;
+                            String barraT = "[";
+                            for (int i = 0; i < 10; i++) {
+                                if (i < barraLlenaT) {
+                                    barraT += "█";
+                                } else {
+                                    barraT += "░";
+                                }
+                            }
+                            barraT += "]";
+
+                            System.out.println("\n=== RESULTADO DEL ENTRENAMIENTO ===");
+                            System.out.println("Tipo    : Resistencia");
+                            System.out.println("─────────────────────────────");
+                            System.out.println("Ganancia: +" + gananciaVida + " de Vida");
+                            System.out.println("Vida    : " + barraT + "  " + vida + "/100");
+                        }
+                        case 3 -> System.out.println("Volviendo al menú principal...");
+                        default -> System.out.println("Opción inválida");
+                    }
+                    break;
                 case 3:
                     System.out.println("\nBatalla próximamente...");
                     break;
@@ -115,11 +171,15 @@ public class RPGMenuSimulator {
 
                     // Barra visual de vida (sobre 100)
                     int barraLlena = vida / 10;
-                    StringBuilder barra = new StringBuilder("[");
+                    String barra = "[";
                     for (int i = 0; i < 10; i++) {
-                        barra.append(i < barraLlena ? "█" : "░");
+                        if (i < barraLlena) {
+                            barra += "█";
+                        } else {
+                            barra += "░";
+                        }
                     }
-                    barra.append("]");
+                    barra += "]";
 
                     String estadoVida;
                     if (vida < 20) {
